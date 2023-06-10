@@ -7,6 +7,9 @@ using System.Reflection;
 using FluentValidation.AspNetCore;
 using System.Text.Json.Serialization;
 using Polly;
+using api.Repositories.Interfaces;
+using api.Repositories;
+using api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +29,9 @@ builder.Services.AddDbContext<RestDbContext>(
 
 builder.Services.AddScoped<IValidator<BaseDoctorDto>, BaseDoctorDtoValidator>();
 builder.Services.AddScoped<IValidator<CreateDoctorDto>, CreateDoctorDtoValidator>();
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IDoctorService, DoctorService>();
 
 var app = builder.Build();
 
