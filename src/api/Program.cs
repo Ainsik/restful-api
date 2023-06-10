@@ -1,15 +1,15 @@
-using api.DbContext;
-using api.DTOs.Validators;
-using api.DTOs;
-using FluentValidation;
-using Microsoft.EntityFrameworkCore;
-using System.Reflection;
-using FluentValidation.AspNetCore;
 using System.Text.Json.Serialization;
+using application.Contracts.Repositories;
+using application.Dto;
+using application.Profiles;
+using application.Services;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using infrastructure.Configuration.Dto;
+using infrastructure.DbContext;
+using infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Polly;
-using api.Repositories.Interfaces;
-using api.Repositories;
-using api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +22,7 @@ builder.Services.AddFluentValidation();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 builder.Services.AddDbContext<RestDbContext>(
     option => option.UseSqlServer(builder.Configuration.GetConnectionString("BackendConnectionString")));
