@@ -50,6 +50,33 @@
 				<button type="submit">Create</button>
 			</form>
 		</div>
+		<div>
+			<h2>PUT</h2>
+			<input type="text" v-model="updateDoctor.id" placeholder="id" />
+			<form @submit.prevent="putDoctor">
+				<input
+					type="text"
+					v-model="updateDoctor.firstName"
+					placeholder="firstName"
+				/>
+				<input
+					type="text"
+					v-model="updateDoctor.lastName"
+					placeholder="lastName"
+				/>
+				<input
+					type="text"
+					v-model="updateDoctor.phone"
+					placeholder="phoneNumber"
+				/>
+				<input
+					type="text"
+					v-model="updateDoctor.specialization"
+					placeholder="specialization"
+				/>
+				<button type="submit">Update</button>
+			</form>
+		</div>
 	</section>
 </template>
 
@@ -66,6 +93,13 @@ export default {
 			doctor: {},
 			doctorId: null,
 			newDoctor: {
+				firstName: "",
+				lastName: "",
+				phone: "",
+				specialization: "",
+			},
+			updateDoctor: {
+				id: null,
 				firstName: "",
 				lastName: "",
 				phone: "",
@@ -111,6 +145,24 @@ export default {
 				this.newDoctor.lastName = "";
 				this.newDoctor.phone = "";
 				this.newDoctor.specialization = "";
+			} catch (error) {
+				this.isValid = false;
+			}
+		},
+		async putDoctor() {
+			this.isValid = true;
+			try {
+				await axios.put(`${API}/${this.updateDoctor.id}`, {
+					firstName: this.updateDoctor.firstName,
+					lastName: this.updateDoctor.lastName,
+					phone: this.updateDoctor.phone,
+					specialization: this.updateDoctor.specialization,
+				});
+				this.updateDoctor.id = null;
+				this.updateDoctor.firstName = "";
+				this.updateDoctor.lastName = "";
+				this.updateDoctor.phone = "";
+				this.updateDoctor.specialization = "";
 			} catch (error) {
 				this.isValid = false;
 			}
