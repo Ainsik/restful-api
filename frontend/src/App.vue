@@ -12,6 +12,16 @@
 				</ul>
 			</div>
 		</div>
+		<div>
+			<h2>CURRENT ID: {{ doctorId }}</h2>
+			<input type="text" v-model="doctorId" />
+			<button @click="getDoctor">getDoctor</button>
+			<p v-if="isValid">
+				ID: {{ doctor.id }} <br />
+				FullName: {{ doctor.fullName }}
+			</p>
+			<p v-else>Invalid id!</p>
+		</div>
 	</section>
 </template>
 
@@ -24,6 +34,8 @@ export default {
 		return {
 			isValid: true,
 			doctors: [],
+			doctor: {},
+			doctorId: null,
 		};
 	},
 	methods: {
@@ -37,6 +49,18 @@ export default {
 			} catch (error) {
 				this.isValid = false;
 			}
+		},
+		async getDoctor() {
+			this.isValid = true;
+			try {
+				await axios.get(`${API}/${this.doctorId}`).then((result) => {
+					const { data } = result;
+					this.doctor = data;
+				});
+			} catch (error) {
+				this.isValid = false;
+			}
+			this.doctorId = null;
 		},
 	},
 };
