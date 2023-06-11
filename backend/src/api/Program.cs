@@ -27,6 +27,17 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddDbContext<RestDbContext>(
     option => option.UseSqlServer(builder.Configuration.GetConnectionString("BackendConnectionString")));
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policyBuilder =>
+    {
+        policyBuilder
+            .WithOrigins(builder.Configuration["AllowedOrigins"])
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
 builder.Services.AddScoped<IValidator<BaseDoctorDto>, BaseDoctorDtoValidator>();
 builder.Services.AddScoped<IValidator<CreateDoctorDto>, CreateDoctorDtoValidator>();
 
@@ -41,6 +52,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors();
 
 app.UseHttpsRedirection();
 
