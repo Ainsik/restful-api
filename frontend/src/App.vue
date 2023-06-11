@@ -18,7 +18,8 @@
 			<h2>CURRENT ID: {{ doctorId }}</h2>
 			<input type="text" v-model="doctorId" />
 			<button @click="getDoctor">getDoctor</button>
-			<p v-if="isValid">
+			<button @click="deleteDoctor">deleteDoctor</button>
+			<p v-if="isValid && doctor.id">
 				ID: {{ doctor.id }} <br />
 				FullName: {{ doctor.fullName }}
 			</p>
@@ -166,6 +167,15 @@ export default {
 			} catch (error) {
 				this.isValid = false;
 			}
+		},
+		async deleteDoctor() {
+			this.isValid = true;
+			try {
+				await axios.delete(`${API}/${this.doctorId}`);
+			} catch (error) {
+				this.isValid = false;
+			}
+			this.doctorId = null;
 		},
 		toggleVisibility() {
 			this.isVisible = !this.isVisible;
