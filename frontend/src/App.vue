@@ -3,11 +3,13 @@
 		<div>
 			<h2>GET ALL</h2>
 			<button @click="getAllDoctors">AllDoctors</button>
-			<div v-if="isValid">
+			<div v-if="isVisible">
 				<ul v-for="doctor in doctors" :key="doctor.id">
 					<li>
 						ID: {{ doctor.id }} <br />
-						FullName: {{ doctor.fullName }}
+						FullName: {{ doctor.fullName }} <br />
+						Phone: {{ doctor.phone }} <br />
+						Specialization: {{ doctor.specialization }}
 					</li>
 				</ul>
 			</div>
@@ -22,6 +24,32 @@
 			</p>
 			<p v-else>Invalid id!</p>
 		</div>
+		<div>
+			<h2>POST</h2>
+			<form @submit.prevent="createDoctor">
+				<input
+					type="text"
+					v-model="newDoctor.firstName"
+					placeholder="firstName"
+				/>
+				<input
+					type="text"
+					v-model="newDoctor.lastName"
+					placeholder="lastName"
+				/>
+				<input
+					type="text"
+					v-model="newDoctor.phone"
+					placeholder="phoneNumber"
+				/>
+				<input
+					type="text"
+					v-model="newDoctor.specialization"
+					placeholder="specialization"
+				/>
+				<button type="submit">Create</button>
+			</form>
+		</div>
 	</section>
 </template>
 
@@ -32,10 +60,17 @@ const API = "https://localhost:44389/api/doctors";
 export default {
 	data() {
 		return {
+			isVisible: false,
 			isValid: true,
 			doctors: [],
 			doctor: {},
 			doctorId: null,
+			newDoctor: {
+				firstName: "",
+				lastName: "",
+				phone: "",
+				specialization: "",
+			},
 		};
 	},
 	methods: {
@@ -49,6 +84,7 @@ export default {
 			} catch (error) {
 				this.isValid = false;
 			}
+			this.toggleVisibility();
 		},
 		async getDoctor() {
 			this.isValid = true;
@@ -61,6 +97,26 @@ export default {
 				this.isValid = false;
 			}
 			this.doctorId = null;
+		},
+		async createDoctor() {
+			this.isValid = true;
+			try {
+				await axios.post(API, {
+					firstName: this.newDoctor.firstName,
+					lastName: this.newDoctor.lastName,
+					phone: this.newDoctor.phone,
+					specialization: this.newDoctor.specialization,
+				});
+				this.newDoctor.firstName = "";
+				this.newDoctor.lastName = "";
+				this.newDoctor.phone = "";
+				this.newDoctor.specialization = "";
+			} catch (error) {
+				this.isValid = false;
+			}
+		},
+		toggleVisibility() {
+			this.isVisible = !this.isVisible;
 		},
 	},
 };
