@@ -22,7 +22,7 @@ git clone git@github.com:Ainsik/restful-api.git
 2. Navigate to the project directory:
 
 ```
-cd simple-restful-api
+cd restful-api
 ```
 
 3. Install the dependencies:
