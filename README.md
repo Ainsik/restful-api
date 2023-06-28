@@ -8,8 +8,8 @@ To get started with this API, follow the instructions below:
 
 ### Prerequisites
 
-- Node.js (version 12 or higher)
-- npm (Node Package Manager)
+- Node.js
+- Node Package Manager
 
 ### Installation
 
@@ -62,35 +62,6 @@ Updates a specific doctor by ID.
 ### `DELETE /api/doctors/:id`
 
 Deletes a specific doctor by ID.
-
-## Request and Response Examples
-
-### Fetching all resources
-
-**Request:**
-
-```
-GET /resources
-```
-
-**Response:**
-
-```
-HTTP/1.1 200 OK
-Content-Type: application/json
-
-[
-    {
-        "id": 1,
-        "name": "Resource 1"
-    },
-    {
-        "id": 2,
-        "name": "Resource 2"
-    },
-    ...
-]
-```
 
 ## Conclusion
 
